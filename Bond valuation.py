@@ -55,7 +55,8 @@ class BondCalculations:
             'daily'        : 365
         }
 
-    def present_value(self, row: pd.Series) -> np.float:
+    def present_value(self, 
+                      row: pd.Series) -> np.float:
         """
         This is used in the method "bond_value()" to calculate the present value from future date and amount.
         fd = future date
@@ -108,7 +109,8 @@ class BondCalculations:
     
         return df, df['present_value'].sum()
     
-    def yield_calculations(self, current_bond_price: np.float) -> (np.float, np.float):
+    def yield_calculations(self, 
+                           current_bond_price: np.float) -> (np.float, np.float):
         """
         Summary
         =======
