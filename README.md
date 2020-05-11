@@ -6,12 +6,11 @@ Please feel free to use my code to compute the bond value, cash flows till the m
 
 Firstly, run the `Bond valuation.py` which will install all necessary packages, import them and will create the class **BondValuation** in memory.
 
-Note that all my calculations assume that the coupon payments are reinvested as they are received.
 
 ## 1. Bond value and cash flows
 
 #### Example  
-_A bond XYZ is about to be issued on "2021-12-25" with the maturity date "2026-12-24" for a face value of £100,000 and coupon rate of 7% per annum to be paid semi-annually. If the current risk free return (discount rate) available in the market is 6.5% per annum, then what would be the value of the bond?_
+_A bond XYZ is issued on "2021-12-25" with the maturity date "2026-12-24" for a face value of £100,000 and coupon rate of 7% per annum to be paid semi-annually. If the current risk free return (discount rate) available in the market is 6.5% per annum, then what would be the value of the bond?_
 
 ```python
 bc = BondCalculations(
@@ -95,8 +94,13 @@ Even though the coupon rate is 7%, the current yield and yield to maturity are h
 * if bond coupon rate < YTM, the bond is at a discount price  
 * if bond coupon rate = YTM, the bond is at a par value  
 
-
-When comparing two bonds, choose the one with higher yield to maturity which indicates the higher profitability of the bond.
+## Notes  
+* When comparing two bonds, choose the one with higher yield to maturity which indicates the higher profitability of the bond.
+* Note that all my calculations assume that the coupon payments are reinvested as they are received.
+* Also, the present value calculation relies on the start date:
+    - if the bond was already issued, then the current date will be taken into account. 
+    - if the bond will be issued in the near future, then the issue date will be taken into account.
+    - Therefore, if you repeat my examples above, the output will be different since your current date is different from mine.
 
 
 
