@@ -55,7 +55,7 @@ The value of the bond is the sum of present values of all futures payments which
 ## 2. Current yield and Yield to maturity  
 
 #### Example  
-_Considering the same example above, if the market price for the bond is £110,000, then what is the current yield and yield to maturity of the bond?
+_Considering the same example above, if the market price for the bond is £110,000, then what is the current yield and yield to maturity of the bond?_
 
 Current yield is the return earned if the bond is held for one year.
 Yield to maturity is the return earned if the bond is held till maturity.
@@ -71,10 +71,10 @@ print(ytm)
 
 ```
 The current yield is 0.06364 or 6.36% and the yield to maturity is 0.04762 or 4.76%.  
-Even though the coupon rate is 7%, the current yield and yield to maturity are lower because of the bonds premium (£110,000 instead of £100,000)
+Even though the coupon rate is 7%, the current yield and yield to maturity are lower because the bond is available at a premium (£110,000 instead of £100,000).
 
 #### Example  
-_Considering the same example above, if the market price for the bond is £90,000, then what is the current yield and yield to maturity of the bond?
+_Considering the same example above, if the market price for the bond is £90,000, then what is the current yield and yield to maturity of the bond?_
 
 ```python
 current_yield, ytm = bc.yield_calculations(current_bond_price = 90000)
@@ -87,7 +87,7 @@ print(ytm)
 
 ```
 The current yield is 0.07778 or 7.78% and the yield to maturity is 0.09474 or 9.47%.  
-Even though the coupon rate is 7%, the current yield and yield to maturity are higher because the bond is available at a discounted rate (£90,000 instead of £100,000)
+Even though the coupon rate is 7%, the current yield and yield to maturity are higher because the bond is available at a discounted rate (£90,000 instead of £100,000).
 
 #### Points to note  
 * if bond coupon rate > YTM, the bond is at a premium price  
