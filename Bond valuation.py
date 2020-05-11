@@ -122,6 +122,7 @@ class BondCalculations:
         ==========
         current_bond_price: a float
             The current market price of the bond.
+            Example: If the current market price of the bond is 127.25, then current_bond_price = 127.25
         
         Returns
         =======
