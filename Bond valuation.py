@@ -1,3 +1,7 @@
+# Install required libraries
+!pip install -r requirements.txt
+
+# Import the libraries
 import numpy as np
 import pandas as pd
 from datetime import datetime, date
@@ -29,8 +33,9 @@ class BondCalculations:
     coupon_payment_frequency: a string
         It is interest payment frequency and it takes any value: 'annually', 'semi_annually', 'quarterly', 'monthly' , 'weekly', 'daily'
         Example: coupon_payment_frequency = 'annually' (default)
-
+        
     """
+    
     def __init__(self,
                  principal_amount: np.float,
                  coupon_rate: np.float,
@@ -38,6 +43,7 @@ class BondCalculations:
                  bond_maturity_date: np.str,
                  discount_rate: np.float,
                  coupon_payment_frequency: np.str = 'annual'):
+        
         self.principal_amount = principal_amount
         self.coupon_rate = coupon_rate
         self.bond_issue_date = datetime.strptime(bond_issue_date, '%Y-%m-%d').date()
@@ -107,7 +113,7 @@ class BondCalculations:
     
         df['present_value'] = df.apply(func = self.present_value, axis = 1)
     
-        return df, df['present_value'].sum()
+        return df, round(df['present_value'].sum(), 0)
     
     def yield_calculations(self, 
                            current_bond_price: np.float) -> (np.float, np.float):
@@ -157,33 +163,4 @@ class BondCalculations:
         receivable_per_year = self.principal_amount * self.coupon_rate
         no_of_year_left = (self.bond_maturity_date - self.cd).days / 365
         yield_to_maturity = (receivable_per_year + ((self.principal_amount - current_bond_price) / no_of_year_left)) / ((self.principal_amount + current_bond_price) / 2)
-        return current_yield, yield_to_maturity
-    
-    
-bc = BondCalculations(
-    principal_amount = 500,
-    coupon_rate = 0.1,
-    bond_issue_date = '2030-01-01',
-    bond_maturity_date = '2039-12-31',
-    discount_rate = 0.12,
-    coupon_payment_frequency = 'quarterly')
-cash_flow, value_of_bond = bc.bond_value()
-print(cash_flow)
-print(value_of_bond)
-cy, ytm = bc.yield_calculations(current_bond_price = 400)
-print(cy)
-print(ytm)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return round(current_yield, 5), round(yield_to_maturity, 5)
