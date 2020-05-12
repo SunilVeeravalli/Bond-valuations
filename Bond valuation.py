@@ -1,5 +1,6 @@
 # Install required libraries
-!pip install -r requirements.txt
+import os
+os.system("pip install -r requirements.txt")
 
 # Import the libraries
 import numpy as np
@@ -164,3 +165,44 @@ class BondCalculations:
         no_of_year_left = (self.bond_maturity_date - self.cd).days / 365
         yield_to_maturity = (receivable_per_year + ((self.principal_amount - current_bond_price) / no_of_year_left)) / ((self.principal_amount + current_bond_price) / 2)
         return round(current_yield, 5), round(yield_to_maturity, 5)
+
+
+def main():
+    face_value = np.float(input('Enter the face value of the bond (e.g. if £100,000, then type 100000): '))
+    issue_date = input('Enter the bond issue date (e.g. 2020-12-22): ')
+    maturity_date = input('Enter the bond maturity date (e.g. 2020-12-22): ')
+    coupon_rate = np.float(input('Enter the coupon rate (e.g. if 7%, then type 0.07): '))
+    discount_rate = np.float(input('Enter the discount rate (e.g. if 6%, then type 0.06): '))
+    coupon_frequency = input("Enter the coupon payment frequency (options: annually, semi_annually, quarterly, monthly , weekly, daily): ")
+    current_market_price = np.float(input("Enter the current market price of the bond (e.g. if £120,000, type 120000): "))
+    bc = BondCalculations(
+        principal_amount = face_value,
+        coupon_rate = coupon_rate,
+        bond_issue_date = issue_date,
+        bond_maturity_date = maturity_date,
+        discount_rate = discount_rate,
+        coupon_payment_frequency = coupon_frequency)
+    cf, bv = bc.bond_value()
+    cy, ytm = bc.yield_calculations(current_bond_price = current_market_price)
+    print(cf)
+    print(f'Value of the bond is: {bv}')
+    print(f'Current Yield is: {cy} or {cy * 100}%')
+    print(f'Yield to maturity is: {ytm} or {ytm * 100}%')
+
+
+if __name__ == '__main__':
+    main()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
