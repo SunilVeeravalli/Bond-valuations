@@ -1,11 +1,11 @@
-# Install required libraries
+# Import built-in libraries
+from datetime import datetime, date
 import os
-os.system("pip install -r requirements.txt")
 
-# Import the libraries
+# Install and import external libraries
+os.system("pip install -r requirements.txt")
 import numpy as np
 import pandas as pd
-from datetime import datetime, date
 
 
 class BondCalculations:

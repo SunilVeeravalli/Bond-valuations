@@ -104,7 +104,8 @@ Even though the coupon rate is 7%, the current yield and yield to maturity are h
 
 
 
-Terminal execution
+## Code execution via the terminal
+Below is a demonstration of executing the code from a command line interface.
 ![Terminal execution](Images/terminal%20execution.png)
 
 
