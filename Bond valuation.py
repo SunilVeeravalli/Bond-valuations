@@ -32,7 +32,7 @@ class BondCalculations:
         The coupon rate is fixed for the bond when it gets issued. Discount rate is the current interest rate available in the market which could be inflation rate OR minimum expected rate of return from bonds of similar quality or credit rating.
         Example: If the yield is 4%, then discount_rate = 0.04
     coupon_payment_frequency: a string
-        It is interest payment frequency and it takes any value: 'annually', 'semi_annually', 'quarterly', 'monthly' , 'weekly', 'daily'
+        It is interest payment frequency and it takes any value: 'annually', 'semi-annually', 'quarterly', 'monthly' , 'weekly', 'daily'
         Example: coupon_payment_frequency = 'annually' (default)
         
     """
@@ -173,7 +173,7 @@ def main():
     maturity_date = input('Enter the bond maturity date (e.g. 2020-12-22): ')
     coupon_rate = np.float(input('Enter the coupon rate (e.g. if 7%, then type 0.07): '))
     discount_rate = np.float(input('Enter the discount rate (e.g. if 6%, then type 0.06): '))
-    coupon_frequency = input("Enter the coupon payment frequency (options: annually, semi_annually, quarterly, monthly , weekly, daily): ")
+    coupon_frequency = input("Enter the coupon payment frequency (options: annually, semi-annually, quarterly, monthly , weekly, daily): ")
     current_market_price = np.float(input("Enter the current market price of the bond (e.g. if £120,000, type 120000): "))
     bc = BondCalculations(
         principal_amount = face_value,
@@ -186,8 +186,8 @@ def main():
     cy, ytm = bc.yield_calculations(current_bond_price = current_market_price)
     print(cf)
     print(f'Value of the bond is: {bv}')
-    print(f'Current Yield is: {cy} or {cy * 100}%')
-    print(f'Yield to maturity is: {ytm} or {ytm * 100}%')
+    print(f'Current Yield is: {cy} or {round(cy * 100, 3)}%')
+    print(f'Yield to maturity is: {ytm} or {round(ytm * 100, 3)}%')
 
 
 if __name__ == '__main__':
