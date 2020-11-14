@@ -1,5 +1,5 @@
 # Import built-in libraries
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 import os
 
 # Install and import external libraries
@@ -96,13 +96,15 @@ class BondCalculations:
         The present value of a bond is: sum of present value (PV) of all future interest payments receivable and present value (PV) of future principal amount receivable.
         The calculation assumes that the coupon payment received is reinvested as they are received.
         """
-        no_of_periods = (self.bond_maturity_date - self.bond_issue_date).days / (
-                    365 / self.payments_per_year[self.coupon_payment_frequency])
-    
+        no_of_days_btw_payments = (365 / self.payments_per_year[self.coupon_payment_frequency])
+        no_of_periods = np.floor((self.bond_maturity_date - self.bond_issue_date).days / no_of_days_btw_payments) + 1
+        periods = [self.bond_issue_date + timedelta(days = (i * no_of_days_btw_payments)) for i in np.arange(no_of_periods)]
+        
+        # The maturity date will be last period in the periods list
+        self.bond_maturity_date = periods[-1]
+        
         df = pd.DataFrame({
-            'receivable_date'  : pd.date_range(start = self.bond_issue_date,
-                                               end = self.bond_maturity_date,
-                                               periods = np.ceil(no_of_periods + 1)).date,
+            'receivable_date'  : periods,
             'receivable_amount': (self.principal_amount * self.coupon_rate) / self.payments_per_year[self.coupon_payment_frequency]
         })
     
@@ -110,7 +112,7 @@ class BondCalculations:
         df = df[df['receivable_date'] > self.cd]
     
         # On the maturity date, along with final coupon payment, the principal amount will also be received.
-        df.loc[df['receivable_date'] == self.bond_maturity_date, 'receivable_amount'] += self.principal_amount
+        df.loc[df.index.max(), 'receivable_amount'] += self.principal_amount
     
         df['present_value'] = df.apply(func = self.present_value, axis = 1)
     
