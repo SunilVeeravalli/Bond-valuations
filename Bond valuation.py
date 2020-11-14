@@ -102,7 +102,7 @@ class BondCalculations:
         df = pd.DataFrame({
             'receivable_date'  : pd.date_range(start = self.bond_issue_date,
                                                end = self.bond_maturity_date,
-                                               periods = no_of_periods + 1).date,
+                                               periods = np.ceil(no_of_periods + 1)).date,
             'receivable_amount': (self.principal_amount * self.coupon_rate) / self.payments_per_year[self.coupon_payment_frequency]
         })
     
@@ -167,23 +167,106 @@ class BondCalculations:
         return round(current_yield, 5), round(yield_to_maturity, 5)
 
 
+def user_input_and_checks():
+    """
+    This function will ask the user to enter the necessary details about the bond.
+     It then checks if the entered values are valid.
+     If not, it will repeatedly asks until a valid value is given.
+    
+    Returns
+    ========
+    a dictionary
+    """
+    valid_inputs = {'face_value': None,
+                    'issue_date': None,
+                    'maturity_date': None,
+                    'coupon_rate': None,
+                    'discount_rate': None,
+                    'coupon_frequency': None,
+                    'current_market_price': None}
+    face_value_valid = -1
+    while face_value_valid == -1:
+        face_value = input('Enter the face value of the bond (e.g. if £100,000, then type 100000): ')
+        try:
+            valid_inputs['face_value'] = np.float(face_value)
+            face_value_valid = 1
+        except Exception as _:
+            print('Invalid entry !! Try again !!')
+            pass
+    issue_date_valid = -1
+    while issue_date_valid == -1:
+        issue_date = input('Enter the bond issue date (e.g. 2020-12-22): ')
+        try:
+            datetime.strptime(issue_date, '%Y-%m-%d').date()
+            valid_inputs['issue_date'] = issue_date
+            issue_date_valid = 1
+        except Exception as _:
+            print('Invalid entry !! Try again !!')
+            pass
+    maturity_date_valid = -1
+    while maturity_date_valid == -1:
+        maturity_date = input('Enter the bond maturity date (e.g. 2020-12-22): ')
+        try:
+            datetime.strptime(maturity_date, '%Y-%m-%d').date()
+            valid_inputs['maturity_date'] = maturity_date
+            if datetime.strptime(valid_inputs['maturity_date'], '%Y-%m-%d') < datetime.strptime(valid_inputs['issue_date'], '%Y-%m-%d'):
+                print('Bond maturity date should not be less than bond issue date !!')
+                print('Invalid entry !! Try again !!')
+            else:
+                maturity_date_valid = 1
+        except Exception as _:
+            print('Invalid entry !! Try again !!')
+            pass
+    coupon_rate_valid = -1
+    while coupon_rate_valid == -1:
+        coupon_rate = input('Enter the coupon rate (e.g. if 7%, then type 0.07): ')
+        try:
+            valid_inputs['coupon_rate'] = np.float(coupon_rate)
+            coupon_rate_valid = 1
+        except Exception as _:
+            print('Invalid entry !! Try again !!')
+            pass
+    discount_rate_valid = -1
+    while discount_rate_valid == -1:
+        discount_rate = input('Enter the discount rate (e.g. if 6%, then type 0.06): ')
+        try:
+            valid_inputs['discount_rate'] = np.float(discount_rate)
+            discount_rate_valid = 1
+        except Exception as _:
+            print('Invalid entry !! Try again !!')
+            pass
+    coupon_frequency_valid = -1
+    while coupon_frequency_valid == -1:
+        coupon_frequency = input("Enter the coupon payment frequency (options: annually, semi-annually, quarterly, monthly, weekly, daily): ")
+        if coupon_frequency in ['annually', 'semi-annually', 'quarterly', 'monthly', 'weekly', 'daily']:
+            valid_inputs['coupon_frequency'] = coupon_frequency
+            coupon_frequency_valid = 1
+        else:
+            print('Invalid entry !! Try again !!')
+    current_market_price_valid = -1
+    while current_market_price_valid == -1:
+        current_market_price = input("Enter the current market price of the bond (e.g. if £120,000, type 120000): ")
+        try:
+            valid_inputs['current_market_price'] = np.float(current_market_price)
+            current_market_price_valid = 1
+        except Exception as _:
+            print('Invalid entry !! Try again !!')
+            pass
+
+    return valid_inputs
+
+
 def main():
-    face_value = np.float(input('Enter the face value of the bond (e.g. if £100,000, then type 100000): '))
-    issue_date = input('Enter the bond issue date (e.g. 2020-12-22): ')
-    maturity_date = input('Enter the bond maturity date (e.g. 2020-12-22): ')
-    coupon_rate = np.float(input('Enter the coupon rate (e.g. if 7%, then type 0.07): '))
-    discount_rate = np.float(input('Enter the discount rate (e.g. if 6%, then type 0.06): '))
-    coupon_frequency = input("Enter the coupon payment frequency (options: annually, semi-annually, quarterly, monthly , weekly, daily): ")
-    current_market_price = np.float(input("Enter the current market price of the bond (e.g. if £120,000, type 120000): "))
+    user_inputs = user_input_and_checks()
     bc = BondCalculations(
-        principal_amount = face_value,
-        coupon_rate = coupon_rate,
-        bond_issue_date = issue_date,
-        bond_maturity_date = maturity_date,
-        discount_rate = discount_rate,
-        coupon_payment_frequency = coupon_frequency)
+        principal_amount = user_inputs['face_value'],
+        coupon_rate = user_inputs['coupon_rate'],
+        bond_issue_date = user_inputs['issue_date'],
+        bond_maturity_date = user_inputs['maturity_date'],
+        discount_rate = user_inputs['discount_rate'],
+        coupon_payment_frequency = user_inputs['coupon_frequency'])
     cf, bv = bc.bond_value()
-    cy, ytm = bc.yield_calculations(current_bond_price = current_market_price)
+    cy, ytm = bc.yield_calculations(current_bond_price = user_inputs['current_market_price'])
     print(cf)
     print(f'Value of the bond is: {bv}')
     print(f'Current Yield is: {cy} or {round(cy * 100, 3)}%')
@@ -192,17 +275,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
